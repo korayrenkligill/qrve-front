@@ -49,7 +49,7 @@ interface PageProps {
 }
 
 export default async function MenuPage(props: PageProps) {
-  const { slug } = await props.params; // ✅ await ile çözüm
+  const { slug } = props.params; // ✅ await ile çözüm
   const businessData = await getBusinessData(slug);
 
   if (!businessData) {
@@ -92,7 +92,7 @@ export default async function MenuPage(props: PageProps) {
 }
 
 export async function generateMetadata(props: PageProps) {
-  const { slug } = await props.params; // ✅ await ile çözüm
+  const { slug } = props.params; // ✅ await ile çözüm
   const businessData = await getBusinessData(slug);
 
   if (!businessData) {
