@@ -29,13 +29,13 @@ interface ApiResponse<T> {
   data: T;
   status: number;
   statusText: string;
-  headers: any;
+  headers: unknown;
   fromCache?: boolean;
 }
 
 class ApiBase {
   private axiosInstance: AxiosInstance;
-  private cache: Map<string, CacheItem<any>> = new Map();
+  private cache: Map<string, CacheItem<unknown>> = new Map();
   private enableCache: boolean;
   private defaultCacheTTL: number;
 
@@ -92,8 +92,8 @@ class ApiBase {
   private generateCacheKey(
     url: string,
     method: string,
-    params?: any,
-    data?: any
+    params?: unknown,
+    data?: unknown
   ): string {
     const key = `${method.toUpperCase()}_${url}_${JSON.stringify(
       params || {}
@@ -114,7 +114,7 @@ class ApiBase {
     }
 
     console.log(`💾 Cache hit for key: ${cacheKey}`);
-    return cached.data;
+    return cached.data as T;
   }
 
   private setCachedData<T>(cacheKey: string, data: T, ttl: number): void {
@@ -144,7 +144,7 @@ class ApiBase {
   }
 
   // Generic request method
-  private async request<TResponse = any, TRequest = any>(
+  private async request<TResponse = unknown, TRequest = unknown>(
     method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH",
     url: string,
     data?: TRequest,
@@ -208,14 +208,14 @@ class ApiBase {
     }
   }
 
-  public async get<TResponse = any>(
+  public async get<TResponse = unknown>(
     url: string,
     options: RequestOptions = {}
   ): Promise<ApiResponse<TResponse>> {
     return this.request<TResponse>("GET", url, undefined, options);
   }
 
-  public async post<TResponse = any, TRequest = any>(
+  public async post<TResponse = unknown, TRequest = unknown>(
     url: string,
     data?: TRequest,
     options: RequestOptions = {}
@@ -223,7 +223,7 @@ class ApiBase {
     return this.request<TResponse, TRequest>("POST", url, data, options);
   }
 
-  public async put<TResponse = any, TRequest = any>(
+  public async put<TResponse = unknown, TRequest = unknown>(
     url: string,
     data?: TRequest,
     options: RequestOptions = {}
@@ -231,7 +231,7 @@ class ApiBase {
     return this.request<TResponse, TRequest>("PUT", url, data, options);
   }
 
-  public async patch<TResponse = any, TRequest = any>(
+  public async patch<TResponse = unknown, TRequest = unknown>(
     url: string,
     data?: TRequest,
     options: RequestOptions = {}
@@ -239,7 +239,7 @@ class ApiBase {
     return this.request<TResponse, TRequest>("PATCH", url, data, options);
   }
 
-  public async delete<TResponse = any>(
+  public async delete<TResponse = unknown>(
     url: string,
     options: RequestOptions = {}
   ): Promise<ApiResponse<TResponse>> {
