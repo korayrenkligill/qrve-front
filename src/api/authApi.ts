@@ -1,3 +1,5 @@
+"use client";
+
 import Cookies from "js-cookie";
 import { ApiBase } from "./apiBase";
 import { LoginType } from "@/interfaces/UserContainer/Auth/LoginType";

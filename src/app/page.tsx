@@ -3,12 +3,10 @@ import {
   Coffee,
   Menu,
   Smartphone,
-  Users,
   Star,
   ArrowRight,
   CheckCircle,
   Globe,
-  Shield,
   Zap,
   CloudLightning,
   RefreshCcw,
@@ -302,7 +300,7 @@ export default function CafeHomepage() {
                   ))}
                 </div>
                 <p className="text-amber-800 mb-6 italic">
-                  "{testimonial.comment}"
+                  &quot;{testimonial.comment}&quot;
                 </p>
                 <div>
                   <div className="font-semibold text-amber-900">
