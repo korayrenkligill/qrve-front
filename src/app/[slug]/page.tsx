@@ -48,9 +48,8 @@ interface RouteProps {
   };
 }
 
-export default async function MenuPage(props: RouteProps) {
-  const { slug } = props.params; // ✅ await ile çözüm
-  const businessData = await getBusinessData(slug);
+export default async function MenuPage({ params }: RouteProps) {
+  const businessData = await getBusinessData(params.slug);
 
   if (!businessData) {
     notFound();
@@ -91,9 +90,8 @@ export default async function MenuPage(props: RouteProps) {
   );
 }
 
-export async function generateMetadata(props: RouteProps) {
-  const { slug } = props.params; // ✅ await ile çözüm
-  const businessData = await getBusinessData(slug);
+export async function generateMetadata({ params }: RouteProps) {
+  const businessData = await getBusinessData(params.slug);
 
   if (!businessData) {
     return {
