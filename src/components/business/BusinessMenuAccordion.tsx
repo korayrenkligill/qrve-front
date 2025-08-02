@@ -1,13 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Business } from "@/interfaces/BusinessInterfaces";
-import { ChevronDown, ChevronUp } from "lucide-react";
 import ProductGridWithModal from "./ProductGridWithModalt";
 import DividerHeader from "./DividerHeader";
+import { BusinessResponseType } from "@/interfaces/BusinessContainer/Business/BusinessResponseType";
 
 interface Props {
-  categories: Business["categories"];
+  categories: BusinessResponseType["categories"];
 }
 
 export default function BusinessMenuAccordion({ categories }: Props) {

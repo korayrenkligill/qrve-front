@@ -11,9 +11,7 @@ import {
   ValidationErrors,
 } from "@/interfaces/component/auth/ValidationTypes";
 
-type Props = {};
-
-const RegisterForm = (props: Props) => {
+const RegisterForm = () => {
   const [registerForm, setRegisterForm] =
     useAtom<RegisterType>(registerFormAtom);
 

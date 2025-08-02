@@ -9,9 +9,7 @@ import { loginFormAtom } from "@/store/component/loginRegisterStore";
 import { useAtom } from "jotai";
 import { authApi } from "@/api/authApi";
 
-type Props = {};
-
-const LoginForm = (props: Props) => {
+const LoginForm = () => {
   const [loginForm, setLoginForm] = useAtom<LoginType>(loginFormAtom);
 
   const [errors, setErrors] = useState<ValidationErrors>({});

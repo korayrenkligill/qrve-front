@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import ProductDetailModal from "./ProductDetailModal"; // detay modalı
-import { Product } from "@/interfaces/ProductInterfaces";
 import { Oleo_Script } from "next/font/google";
 import { Donut, Pointer } from "lucide-react";
+import { ProductResponseType } from "@/interfaces/ProductContainer/Product/ProductResponseType";
 
 const oleoScript = Oleo_Script({
   subsets: ["latin"],
@@ -12,11 +12,12 @@ const oleoScript = Oleo_Script({
 });
 
 interface Props {
-  products: Product[];
+  products: ProductResponseType[];
 }
 
 export default function ProductGridWithModal({ products }: Props) {
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [selectedProduct, setSelectedProduct] =
+    useState<ProductResponseType | null>(null);
   const [opened, setOpened] = useState(false);
 
   useEffect(() => {

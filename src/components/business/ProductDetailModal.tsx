@@ -1,12 +1,12 @@
 "use client";
 
-import { Product } from "@/interfaces/ProductInterfaces";
 import { motion, AnimatePresence } from "framer-motion";
 import { Donut, Dot, WineOff } from "lucide-react";
 import { Oleo_Script } from "next/font/google";
 import DividerHeader from "./DividerHeader";
 import { Popover, Text } from "@mantine/core";
 import { useEffect } from "react";
+import { ProductResponseType } from "@/interfaces/ProductContainer/Product/ProductResponseType";
 
 const oleoScript = Oleo_Script({
   subsets: ["latin"],
@@ -16,7 +16,7 @@ const oleoScript = Oleo_Script({
 interface Props {
   opened: boolean;
   onClose: () => void;
-  product: Product | null;
+  product: ProductResponseType | null;
 }
 
 export default function ProductDetailModal({
