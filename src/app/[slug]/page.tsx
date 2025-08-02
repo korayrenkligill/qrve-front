@@ -42,14 +42,17 @@ async function getBusinessData(
   }
 }
 
-interface RouteProps {
-  params: {
+// Next.js 15 için güncellenmiş interface
+interface PageProps {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
-export default async function MenuPage({ params }: RouteProps) {
-  const businessData = await getBusinessData(params.slug);
+export default async function MenuPage({ params }: PageProps) {
+  // params'ı await ile bekleyin
+  const { slug } = await params;
+  const businessData = await getBusinessData(slug);
 
   if (!businessData) {
     notFound();
@@ -90,8 +93,10 @@ export default async function MenuPage({ params }: RouteProps) {
   );
 }
 
-export async function generateMetadata({ params }: RouteProps) {
-  const businessData = await getBusinessData(params.slug);
+export async function generateMetadata({ params }: PageProps) {
+  // params'ı await ile bekleyin
+  const { slug } = await params;
+  const businessData = await getBusinessData(slug);
 
   if (!businessData) {
     return {
