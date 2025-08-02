@@ -42,13 +42,13 @@ async function getBusinessData(
   }
 }
 
-interface PageProps {
+interface RouteProps {
   params: {
     slug: string;
   };
 }
 
-export default async function MenuPage(props: PageProps) {
+export default async function MenuPage(props: RouteProps) {
   const { slug } = props.params; // ✅ await ile çözüm
   const businessData = await getBusinessData(slug);
 
@@ -91,7 +91,7 @@ export default async function MenuPage(props: PageProps) {
   );
 }
 
-export async function generateMetadata(props: PageProps) {
+export async function generateMetadata(props: RouteProps) {
   const { slug } = props.params; // ✅ await ile çözüm
   const businessData = await getBusinessData(slug);
 
