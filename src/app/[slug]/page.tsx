@@ -30,7 +30,6 @@ async function getBusinessData(
     }
 
     const data: ApiResponseType<BusinessResponseType> = await res.json();
-
     if (data.isSuccess && data.data) {
       return data.data;
     }
@@ -42,7 +41,6 @@ async function getBusinessData(
   }
 }
 
-// Next.js 15 için güncellenmiş interface
 interface PageProps {
   params: Promise<{
     slug: string;
@@ -50,7 +48,6 @@ interface PageProps {
 }
 
 export default async function MenuPage({ params }: PageProps) {
-  // params'ı await ile bekleyin
   const { slug } = await params;
   const businessData = await getBusinessData(slug);
 

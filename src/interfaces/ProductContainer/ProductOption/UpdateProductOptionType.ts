@@ -1,4 +1,4 @@
-export interface UpdateProductLikeType {
+export interface UpdateProductOptionType {
   id: string;
   optionName?: string;
   extraPrice?: number;

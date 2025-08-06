@@ -12,7 +12,6 @@ interface Props {
 export default function BusinessMenuAccordion({ categories }: Props) {
   const [openCategoryIds, setOpenCategoryIds] = useState<string[]>([]);
 
-  // Başlangıçta tüm kategorileri açık hale getir
   useEffect(() => {
     const allCategoryIds = categories.map((c) => c.id);
     setOpenCategoryIds(allCategoryIds);

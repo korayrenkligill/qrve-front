@@ -1,5 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import Cookies from "js-cookie";
+import toast from "react-hot-toast";
 
 // Cache interface
 interface CacheItem<T> {
@@ -52,7 +53,6 @@ class ApiBase {
       },
     });
 
-    // Cookie'de token varsa header'a ekle
     const token = Cookies.get("accessToken");
     if (token) {
       this.setAuthToken(token);
@@ -64,18 +64,15 @@ class ApiBase {
   private setupInterceptors(): void {
     this.axiosInstance.interceptors.request.use(
       (config) => {
-        console.log(`🚀 ${config.method?.toUpperCase()} ${config.url}`);
         return config;
       },
       (error) => {
-        console.error("❌ Request Error:", error);
         return Promise.reject(error);
       }
     );
 
     this.axiosInstance.interceptors.response.use(
       (response) => {
-        console.log(`✅ ${response.status} ${response.config.url}`);
         return response;
       },
       (error) => {
@@ -98,7 +95,7 @@ class ApiBase {
     const key = `${method.toUpperCase()}_${url}_${JSON.stringify(
       params || {}
     )}_${JSON.stringify(data || {})}`;
-    return btoa(key); // Base64 encode for cleaner keys
+    return btoa(unescape(encodeURIComponent(key)));
   }
 
   private getCachedData<T>(cacheKey: string): T | null {
@@ -112,8 +109,8 @@ class ApiBase {
       this.cache.delete(cacheKey);
       return null;
     }
-
-    console.log(`💾 Cache hit for key: ${cacheKey}`);
+    const decodedKey = atob(cacheKey);
+    console.log(`💾 Cache hit for key: ${decodedKey}`);
     return cached.data as T;
   }
 
@@ -125,19 +122,39 @@ class ApiBase {
       timestamp: Date.now(),
       ttl,
     });
-    console.log(`💾 Data cached with key: ${cacheKey}`);
+    const decodedKey = atob(cacheKey);
+    console.log(`💾 Data cached with key: ${decodedKey}`);
+  }
+
+  public debugCacheManually() {
+    // @ts-ignore
+    const cache = this["cache"] as Map<string, unknown>;
+    if (!cache) return;
+
+    console.log(`🧪 BusinessUserApi Cache (${cache.size} items):`);
+    for (const [key, value] of cache.entries()) {
+      console.log(`🗝️ ${atob(key)} =>`, value);
+    }
   }
 
   public clearCache(): void {
+    this.debugCacheManually();
+
     this.cache.clear();
+
     console.log("🗑️ Cache cleared");
+    console.log("📭 Current cache size:", this.cache.size);
   }
 
   public clearCacheByPattern(pattern: string): void {
-    const regex = new RegExp(pattern);
-    for (const [key] of this.cache) {
-      if (regex.test(atob(key))) {
-        this.cache.delete(key);
+    const regex = new RegExp(pattern, "i"); // Case insensitive
+    let deletedCount = 0;
+
+    for (const [encodedKey] of this.cache) {
+      const decodedKey = atob(encodedKey);
+      if (regex.test(decodedKey)) {
+        this.cache.delete(encodedKey);
+        deletedCount++;
       }
     }
     console.log(`🗑️ Cache cleared for pattern: ${pattern}`);
@@ -197,6 +214,15 @@ class ApiBase {
       return apiResponse;
     } catch (error) {
       if (axios.isAxiosError(error)) {
+        if (!error.response?.data.message && error.response?.status === 401) {
+          toast.error("Oturumunuz geçerli değil, sayfa yenileniyor...", {
+            id: "auth-error",
+          });
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        }
+        console.error("❌ Axios Error:", error.response?.status, error.message);
         throw {
           message: error.message,
           status: error.response?.status,

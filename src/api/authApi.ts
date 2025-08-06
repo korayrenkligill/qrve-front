@@ -27,10 +27,29 @@ class AuthApi extends ApiBase {
     );
     if (res.data.data) {
       const _data = res.data.data;
-      Cookies.set("accessToken", _data.accessToken);
-      Cookies.set("refreshToken", _data.refreshToken);
-      Cookies.set("accessTokenExpire", _data.accessTokenExpire);
-      Cookies.set("refreshTokenExpire", _data.refreshTokenExpire);
+
+      Cookies.set("accessToken", _data.accessToken, {
+        path: "/",
+        expires: new Date(_data.accessTokenExpire),
+        // secure: true,
+        sameSite: "Lax",
+      });
+      Cookies.set("refreshToken", _data.refreshToken, {
+        path: "/",
+        expires: new Date(_data.refreshTokenExpire),
+        sameSite: "Lax",
+      });
+      Cookies.set("accessTokenExpire", _data.accessTokenExpire, {
+        path: "/",
+        expires: new Date(_data.accessTokenExpire),
+        sameSite: "Lax",
+      });
+      Cookies.set("refreshTokenExpire", _data.refreshTokenExpire, {
+        path: "/",
+        expires: new Date(_data.refreshTokenExpire),
+        sameSite: "Lax",
+      });
+
       this.setAuthToken(_data.accessToken);
     }
     return res.data;
@@ -45,10 +64,29 @@ class AuthApi extends ApiBase {
     >("/api/Auth/register", data);
     if (res.data.data) {
       const _data = res.data.data;
-      Cookies.set("accessToken", _data.accessToken);
-      Cookies.set("refreshToken", _data.refreshToken);
-      Cookies.set("accessTokenExpire", _data.accessTokenExpire);
-      Cookies.set("refreshTokenExpire", _data.refreshTokenExpire);
+
+      Cookies.set("accessToken", _data.accessToken, {
+        path: "/",
+        expires: new Date(_data.accessTokenExpire),
+        // secure: true,
+        sameSite: "Lax",
+      });
+      Cookies.set("refreshToken", _data.refreshToken, {
+        path: "/",
+        expires: new Date(_data.refreshTokenExpire),
+        sameSite: "Lax",
+      });
+      Cookies.set("accessTokenExpire", _data.accessTokenExpire, {
+        path: "/",
+        expires: new Date(_data.accessTokenExpire),
+        sameSite: "Lax",
+      });
+      Cookies.set("refreshTokenExpire", _data.refreshTokenExpire, {
+        path: "/",
+        expires: new Date(_data.refreshTokenExpire),
+        sameSite: "Lax",
+      });
+
       this.setAuthToken(_data.accessToken);
     }
     return res.data;
@@ -63,10 +101,29 @@ class AuthApi extends ApiBase {
     >("/api/Auth/refresh-token", data);
     if (res.data.data) {
       const _data = res.data.data;
-      Cookies.set("accessToken", _data.accessToken);
-      Cookies.set("refreshToken", _data.refreshToken);
-      Cookies.set("accessTokenExpire", _data.accessTokenExpire);
-      Cookies.set("refreshTokenExpire", _data.refreshTokenExpire);
+
+      Cookies.set("accessToken", _data.accessToken, {
+        path: "/",
+        expires: new Date(_data.accessTokenExpire),
+        // secure: true,
+        sameSite: "Lax",
+      });
+      Cookies.set("refreshToken", _data.refreshToken, {
+        path: "/",
+        expires: new Date(_data.refreshTokenExpire),
+        sameSite: "Lax",
+      });
+      Cookies.set("accessTokenExpire", _data.accessTokenExpire, {
+        path: "/",
+        expires: new Date(_data.accessTokenExpire),
+        sameSite: "Lax",
+      });
+      Cookies.set("refreshTokenExpire", _data.refreshTokenExpire, {
+        path: "/",
+        expires: new Date(_data.refreshTokenExpire),
+        sameSite: "Lax",
+      });
+
       this.setAuthToken(_data.accessToken);
     }
     return res.data;

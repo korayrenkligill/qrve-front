@@ -10,8 +10,14 @@ import {
   PasswordValidation,
   ValidationErrors,
 } from "@/interfaces/component/auth/ValidationTypes";
+import { useRouter, useSearchParams } from "next/navigation";
+import { authApi } from "@/api/authApi";
 
 const RegisterForm = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const returnUrl = searchParams.get("returnUrl") || "/";
+
   const [registerForm, setRegisterForm] =
     useAtom<RegisterType>(registerFormAtom);
 
@@ -65,9 +71,10 @@ const RegisterForm = () => {
       return;
     }
 
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
+    await authApi
+      .register(registerForm)
+      .then(() => router.replace(returnUrl))
+      .finally(() => setIsLoading(false));
   };
 
   return (

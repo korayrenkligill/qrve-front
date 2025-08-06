@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import { Coffee, ArrowLeft } from "lucide-react";
 import { AnimatePresence } from "framer-motion";
-import { useRouter } from "next/navigation";
 import { useSetAtom } from "jotai";
 import {
   loginFormAtom,
@@ -14,7 +13,6 @@ import LoginForm from "./login/LoginForm";
 import RegisterForm from "./login/RegisterForm";
 
 export default function LoginRegisterPage(): React.ReactNode {
-  const router = useRouter();
   const [isLogin, setIsLogin] = useState<boolean>(true);
 
   const setRegisterForm = useSetAtom(registerFormAtom);
@@ -30,6 +28,7 @@ export default function LoginRegisterPage(): React.ReactNode {
       passwordConfirm: "",
     });
   };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-100 flex items-center justify-center p-4">
       <div className="absolute inset-0 opacity-5">

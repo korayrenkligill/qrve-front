@@ -7,6 +7,7 @@ export interface ProductResponseType {
   id: string;
   businessId: string;
   categoryId: string;
+  categoryName: string;
   name: string;
   description?: string;
   price: number;
@@ -15,7 +16,14 @@ export interface ProductResponseType {
   order: number;
   createdDate: string;
   contents: ProductContentResponseType[];
-  likes: ProductLikeResponseType[];
+  likes: ProductLikeType[];
   options: ProductOptionResponseType[];
   variants: ProductVariantResponseType[];
+}
+
+export interface ProductLikeType {
+  id: string;
+  fullname: string;
+  isLiked: boolean;
+  createdDate: string;
 }

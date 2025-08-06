@@ -20,10 +20,6 @@ export default function ProductGridWithModal({ products }: Props) {
     useState<ProductResponseType | null>(null);
   const [opened, setOpened] = useState(false);
 
-  useEffect(() => {
-    console.log(selectedProduct);
-  }, [selectedProduct]);
-
   return (
     <>
       <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-4 mb-12">
@@ -65,7 +61,7 @@ export default function ProductGridWithModal({ products }: Props) {
                     </p>
                   </div>
                   <p
-                    className={`${oleoScript.className} font-bold font-bold text-2xl text-white`}
+                    className={`${oleoScript.className} font-bold text-2xl text-white`}
                   >
                     {product.price} ₺
                   </p>

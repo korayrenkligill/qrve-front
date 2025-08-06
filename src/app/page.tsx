@@ -1,7 +1,9 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import {
   Coffee,
-  Menu,
+  Menu as MenuIcon,
   Smartphone,
   Star,
   ArrowRight,
@@ -14,11 +16,24 @@ import {
   LightbulbIcon,
 } from "lucide-react";
 import Link from "next/link";
+import { getCurrentUser } from "@/lib/auth/getCurrentUser";
+import { Avatar, Loader, Menu } from "@mantine/core";
+import { Oleo_Script } from "next/font/google";
+import { BusinessUserResponseType } from "@/interfaces/BusinessContainer/BusinessUser/BusinessUserResponseType";
+import { businessUserApi } from "@/api/businessUserApi";
+import { NormalizedToken } from "@/utils/normalizeJwt";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
+
+const oleoScript = Oleo_Script({
+  subsets: ["latin"],
+  weight: ["700", "400"],
+});
 
 export default function CafeHomepage() {
   const features = [
     {
-      icon: <Menu className="w-8 h-8" />,
+      icon: <MenuIcon className="w-8 h-8" />,
       title: "Dijital Menü",
       description: "QR kod ile müşterileriniz menünüze kolayca ulaşsın",
     },
@@ -62,7 +77,6 @@ export default function CafeHomepage() {
         "Menünüzü yönetim panelinden anında düzenleyin, hiçbir teknik bilgi gerekmez",
     },
   ];
-
   const plans = [
     {
       name: "Başlangıç",
@@ -101,7 +115,6 @@ export default function CafeHomepage() {
       popular: false,
     },
   ];
-
   const testimonials = [
     {
       name: "Ahmet Kaya",
@@ -125,6 +138,35 @@ export default function CafeHomepage() {
     },
   ];
 
+  const router = useRouter();
+
+  const [user, setUser] = useState<NormalizedToken | null>();
+  const [businesses, setBusinesses] = useState<BusinessUserResponseType[]>([]);
+  const [loading, setLoading] = useState(true);
+  const getBusinesses = async () => {
+    const response = await businessUserApi.getUserBusinesses();
+    if (response.data) setBusinesses(response.data);
+  };
+
+  useEffect(() => {
+    if (user) {
+      getBusinesses();
+    }
+  }, [user]);
+
+  useEffect(() => {
+    const _user = getCurrentUser();
+    setUser(_user);
+    setLoading(false);
+  }, []);
+
+  if (loading)
+    return (
+      <div className="h-screen w-screen flex items-center justify-center">
+        <Loader />
+      </div>
+    );
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-100">
       {/* Header */}
@@ -147,12 +189,60 @@ export default function CafeHomepage() {
             >
               Fiyatlar
             </a>
-            <Link
-              href="/login"
-              className="bg-amber-700 text-white px-6 py-2 rounded-lg hover:bg-amber-800 transition-colors"
-            >
-              Giriş Yap
-            </Link>
+            {user ? (
+              <Menu shadow="md" width={200}>
+                <Menu.Target>
+                  <div className="flex items-center gap-2 cursor-pointer">
+                    <p
+                      className={`${oleoScript.className} text-lg font-bold text-amber-800 hover:text-amber-900 transition-colors`}
+                    >
+                      {user.name}
+                    </p>
+                    <Avatar size="md" name={user.name} color="orange" />
+                  </div>
+                </Menu.Target>
+
+                <Menu.Dropdown>
+                  {businesses.length > 0 && (
+                    <>
+                      <Menu.Label>Yönetim</Menu.Label>
+                      <Menu.Item
+                        leftSection={<MenuIcon size={14} />}
+                        onClick={() => router.push("/panel")}
+                      >
+                        Yönetim Paneli
+                      </Menu.Item>
+                    </>
+                  )}
+                  <Menu.Label>Hesap</Menu.Label>
+                  <Menu.Item leftSection={<MenuIcon size={14} />}>
+                    Profil
+                  </Menu.Item>
+                  <Menu.Item
+                    color="red"
+                    leftSection={<MenuIcon size={14} />}
+                    onClick={() => {
+                      Cookies.remove("accessToken");
+                      Cookies.remove("accessTokenExpire");
+                      Cookies.remove("refreshToken");
+                      Cookies.remove("refreshTokenExpire");
+
+                      setUser(null);
+                      setBusinesses([]);
+                    }}
+                  >
+                    Çıkış Yap
+                  </Menu.Item>
+                </Menu.Dropdown>
+              </Menu>
+            ) : (
+              <Link
+                href="/login"
+                className="bg-amber-700 text-white px-6 py-2 rounded-lg hover:bg-amber-800 transition-colors"
+              >
+                Giriş Yap
+              </Link>
+            )}
           </div>
         </nav>
       </header>

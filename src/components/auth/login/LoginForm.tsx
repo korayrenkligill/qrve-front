@@ -8,8 +8,13 @@ import { ValidationErrors } from "@/interfaces/component/auth/ValidationTypes";
 import { loginFormAtom } from "@/store/component/loginRegisterStore";
 import { useAtom } from "jotai";
 import { authApi } from "@/api/authApi";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const LoginForm = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const returnUrl = searchParams.get("returnUrl") || "/";
+
   const [loginForm, setLoginForm] = useAtom<LoginType>(loginFormAtom);
 
   const [errors, setErrors] = useState<ValidationErrors>({});
@@ -35,7 +40,10 @@ const LoginForm = () => {
       return;
     }
 
-    await authApi.login(loginForm).finally(() => setIsLoading(false));
+    await authApi
+      .login(loginForm)
+      .then(() => router.replace(returnUrl))
+      .finally(() => setIsLoading(false));
   };
   return (
     <motion.div

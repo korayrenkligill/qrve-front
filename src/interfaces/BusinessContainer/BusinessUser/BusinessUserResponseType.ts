@@ -1,14 +1,17 @@
+import { BusinessType } from "@/Enums/BusinessTypes";
 import { BusinessUserType } from "@/Enums/BusinessUserTypes";
 
-interface UserHolderType {
+export interface UserHolderType {
   id: string;
   fullName: string;
 }
 
-interface BusinessHolderType {
+export interface BusinessHolderType {
   id: string;
   name: string;
   slug: string;
+  logoUrl?: string;
+  type: BusinessType;
 }
 
 export interface BusinessUserResponseType {

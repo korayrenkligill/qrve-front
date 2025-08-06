@@ -1,4 +1,4 @@
-export interface CreateProductLikeType {
+export interface CreateProductOptionType {
   productId: string;
   optionName: string;
   extraPrice: number;
